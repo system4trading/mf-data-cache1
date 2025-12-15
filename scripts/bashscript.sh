@@ -9,7 +9,7 @@ APP_REPO="mf-analytics"
 DATA_REPO="mf-data-cache"
 
 # Change these to your GitHub repos
-DATA_REPO_GIT="https://github.com/YOURNAME/mf-data-cache.git"
+DATA_REPO_GIT="https://github.com/system4trading/mf-data-cache.git"
 
 NODE_VERSION_REQUIRED=18
 

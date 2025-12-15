@@ -1,0 +1,13 @@
+name: Update Data
+on:
+  schedule:
+    - cron: '30 18 * * *'
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: node scripts/fetch_amfi.js
+      - run: git commit -am "Daily update" || true
+      - run: git push
+

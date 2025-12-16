@@ -2,17 +2,10 @@ import fs from "fs";
 import fetch from "node-fetch";
 import crypto from "crypto";
 
-const hash = crypto
-  .createHash("sha256")
-  .update(JSON.stringify(data))
-  .digest("hex");
-
-
 const SYMBOL = "^NSEI";
 const OUT_DIR = "nifty";
 const OUT_FILE = `${OUT_DIR}/nifty50.json`;
 
-// 5 years of daily data
 const RANGE = "5y";
 const INTERVAL = "1d";
 
@@ -34,32 +27,28 @@ async function fetchWithRetry(url, retries = 3) {
   }
 }
 
-console.log("Fetching Nifty 50 data…");
+console.log("📊 Fetching Nifty 50 data…");
 
 const json = await fetchWithRetry(URL);
 
-// ---------------- VALIDATION ----------------
-if (
-  !json.chart ||
-  !json.chart.result ||
-  !json.chart.result[0]
-) {
-  throw new Error("Invalid Yahoo response structure");
+// ---------- VALIDATION ----------
+if (!json.chart || !json.chart.result || !json.chart.result[0]) {
+  throw new Error("Invalid Yahoo Finance response");
 }
 
 const result = json.chart.result[0];
 const timestamps = result.timestamp;
-const prices = result.indicators?.quote?.[0]?.close;
+const closes = result.indicators?.quote?.[0]?.close;
 
-if (!timestamps || !prices || timestamps.length !== prices.length) {
-  throw new Error("Malformed Nifty price data");
+if (!timestamps || !closes || timestamps.length !== closes.length) {
+  throw new Error("Malformed Nifty data");
 }
 
-// ---------------- NORMALIZATION ----------------
+// ---------- BUILD DATA ----------
 const data = [];
 
 for (let i = 0; i < timestamps.length; i++) {
-  const close = prices[i];
+  const close = closes[i];
   if (close === null || isNaN(close)) continue;
 
   const date = new Date(timestamps[i] * 1000)
@@ -72,23 +61,31 @@ for (let i = 0; i < timestamps.length; i++) {
   });
 }
 
-// Ensure chronological order
 data.sort((a, b) => a.date.localeCompare(b.date));
 
 if (data.length < 1000) {
   throw new Error("Suspiciously small Nifty dataset");
 }
 
+// ---------- CHANGE DETECTION ----------
+fs.mkdirSync(OUT_DIR, { recursive: true });
+
+const newHash = crypto
+  .createHash("sha256")
+  .update(JSON.stringify(data))
+  .digest("hex");
+
 if (fs.existsSync(OUT_FILE)) {
-  const old = JSON.parse(fs.readFileSync(OUT_FILE));
-  if (old.length === data.length) {
-    console.log("No Nifty change detected");
+  const old = fs.readFileSync(OUT_FILE, "utf8");
+  const oldHash = crypto.createHash("sha256").update(old).digest("hex");
+
+  if (newHash === oldHash) {
+    console.log("✅ Nifty unchanged — skipping write");
     process.exit(0);
   }
 }
 
-// ---------------- WRITE ----------------
-fs.mkdirSync(OUT_DIR, { recursive: true });
+// ---------- WRITE ----------
 fs.writeFileSync(OUT_FILE, JSON.stringify(data, null, 2));
 
-console.log(`Nifty50 updated: ${data.length} records`);
+console.log(`✅ Nifty50 updated: ${data.length} records`);

@@ -49,7 +49,6 @@ fi
 # -------------------------------
 if [ ! -d "$DATA_REPO" ]; then
   echo "📥 Cloning mf-data-cache repo..."
-  git clone $DATA_REPO_GIT
 fi
 
 # -------------------------------
@@ -97,13 +96,9 @@ echo "🚀 Pushing updated data to GitHub..."
 
 cd mf-data-cache
 
-git config user.name "amfi-bot"
-git config user.email "amfi-bot@users.noreply.github.com"
-
 git add .
 git commit -m "Daily AMFI & Nifty data update" || echo "ℹ️ No changes to commit"
 
-git push origin main
 
 
 # -------------------------------

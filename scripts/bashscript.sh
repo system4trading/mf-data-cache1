@@ -17,6 +17,8 @@ echo "-----------------------------------------"
 echo "Hybrid MF Analyzer – Setup & Data Pipeline"
 echo "-----------------------------------------"
 
+import fetch from "node-fetch";
+
 # -------------------------------
 # Check Node.js
 # -------------------------------

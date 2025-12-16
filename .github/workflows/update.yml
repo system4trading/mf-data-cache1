@@ -1,8 +1,11 @@
-name: Daily MF & Nifty Update
+name: Daily AMFI NAV update
+
+permissions:
+  contents: write   # 🔥 THIS LINE FIXES THE ERROR
 
 on:
   schedule:
-    - cron: '30 18 * * *'   # Runs daily
+    - cron: '30 18 * * *'
   workflow_dispatch:
 
 jobs:

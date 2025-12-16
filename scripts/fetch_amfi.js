@@ -31,9 +31,10 @@ for (const code in cache) {
     `amfi/nav_${code}.json`,
     JSON.stringify(cache[code])
   );
+      const shard = code.substring(0, 2);
+  fs.mkdirSync(`amfi/${shard}`, { recursive: true });
+  fs.writeFileSync(`amfi/${shard}/nav_${code}.json`, JSON.stringify(data));
+
 }
-const shard = code.substring(0, 2);
-fs.mkdirSync(`amfi/${shard}`, { recursive: true });
-fs.writeFileSync(`amfi/${shard}/nav_${code}.json`, JSON.stringify(data));
 
 console.log("AMFI NAV processed safely");

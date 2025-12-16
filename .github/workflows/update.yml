@@ -32,10 +32,3 @@ jobs:
           git commit -m "Auto update MF & Nifty data" || true
           git push
 
-name: Commit & push
-      - run: |
-          git config user.name "amfi-bot"
-          git config user.email "amfi-bot@github.com"
-          git add .
-          git commit -m "Daily AMFI NAV update" || true
-          git push

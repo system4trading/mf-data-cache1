@@ -88,6 +88,8 @@ node scripts/fetch_nifty.js
 echo "📊 Building category averages..."
 node scripts/build_category_avg.js
 
+echo "✅ Data pipeline completed"
+
 # -------------------------------
 # Commit & push data
 # -------------------------------

@@ -34,8 +34,6 @@ if [ "$NODE_MAJOR" -lt "$NODE_VERSION_REQUIRED" ]; then
   exit 1
 fi
 
-echo "✅ Node.js version OK: $NODE_VERSION"
-
 # -------------------------------
 # Install frontend dependencies
 # -------------------------------

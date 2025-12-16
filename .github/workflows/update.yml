@@ -37,3 +37,4 @@ jobs:
           git commit -m "Auto update MF & Nifty data" || true
           git push
 
+

@@ -19,6 +19,9 @@ jobs:
         with:
           node-version: 18
       
+      - run: npm init -y
+      - run: npm install node-fetch@3
+      
       - run: npm install node-fetch
 
       - run: node scripts/fetch_amfi.js

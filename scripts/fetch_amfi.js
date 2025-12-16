@@ -1,29 +1,36 @@
 import fs from "fs";
 import fetch from "node-fetch";
+import readline from "readline";
 
-const AMFI_URL = "https://www.amfiindia.com/spages/NAVAll.txt";
+const url = "https://www.amfiindia.com/spages/NAVAll.txt";
 
-const text = await fetch(AMFI_URL).then(r => r.text());
-const lines = text.split("\n");
-
-const schemes = {};
-lines.forEach(l => {
-  const p = l.split(";");
-  if (p.length > 4 && !isNaN(p[0])) {
-    const code = p[0];
-    const nav = parseFloat(p[4]);
-    const date = p[7];
-    if (!schemes[code]) schemes[code] = [];
-    schemes[code].push({ date, nav });
-  }
+const res = await fetch(url);
+const rl = readline.createInterface({
+  input: res.body,
+  crlfDelay: Infinity
 });
 
 fs.mkdirSync("amfi", { recursive: true });
-Object.keys(schemes).forEach(code => {
+
+const cache = {};
+
+for await (const line of rl) {
+  const p = line.split(";");
+  if (p.length > 4 && !isNaN(p[0])) {
+    const code = p[0];
+    const nav = Number(p[4]);
+    const date = p[7];
+
+    if (!cache[code]) cache[code] = [];
+    cache[code].push({ date, nav });
+  }
+}
+
+for (const code in cache) {
   fs.writeFileSync(
     `amfi/nav_${code}.json`,
-    JSON.stringify(schemes[code], null, 2)
+    JSON.stringify(cache[code])
   );
-});
+}
 
-console.log("AMFI NAV data updated");
+console.log("AMFI NAV processed safely");

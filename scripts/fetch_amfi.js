@@ -25,16 +25,16 @@ for await (const line of rl) {
     cache[code].push({ date, nav });
   }
 }
+const shard = code.substring(0, 2);
+  fs.mkdirSync(`amfi/${shard}`, { recursive: true });
+  fs.writeFileSync(`amfi/${shard}/nav_${code}.json`, JSON.stringify(data));
 
 for (const code in cache) {
   fs.writeFileSync(
     `amfi/nav_${code}.json`,
     JSON.stringify(cache[code])
   );
-      const shard = code.substring(0, 2);
-  fs.mkdirSync(`amfi/${shard}`, { recursive: true });
-  fs.writeFileSync(`amfi/${shard}/nav_${code}.json`, JSON.stringify(data));
-
+ 
 }
 
 console.log("AMFI NAV processed safely");

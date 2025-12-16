@@ -24,8 +24,6 @@ jobs:
       
       - run: npm install node-fetch
 
-      - run: bash ./bashscript.sh
-
       - run: node scripts/fetch_amfi.js
       - run: node scripts/fetch_nifty.js
       - run: node scripts/build_category_avg.js

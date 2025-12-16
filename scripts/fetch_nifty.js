@@ -1,5 +1,12 @@
 import fs from "fs";
 import fetch from "node-fetch";
+import crypto from "crypto";
+
+const hash = crypto
+  .createHash("sha256")
+  .update(JSON.stringify(data))
+  .digest("hex");
+
 
 const SYMBOL = "^NSEI";
 const OUT_DIR = "nifty";
@@ -70,6 +77,14 @@ data.sort((a, b) => a.date.localeCompare(b.date));
 
 if (data.length < 1000) {
   throw new Error("Suspiciously small Nifty dataset");
+}
+
+if (fs.existsSync(OUT_FILE)) {
+  const old = JSON.parse(fs.readFileSync(OUT_FILE));
+  if (old.length === data.length) {
+    console.log("No Nifty change detected");
+    process.exit(0);
+  }
 }
 
 // ---------------- WRITE ----------------

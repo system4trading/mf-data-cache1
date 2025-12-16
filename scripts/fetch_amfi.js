@@ -31,7 +31,6 @@ for (const code in cache) {
     `amfi/nav_${code}.json`,
     JSON.stringify(cache[code])
   );
- 
 }
 
 console.log("AMFI NAV processed safely");

@@ -93,11 +93,21 @@ node scripts/build_category_avg.js
 # -------------------------------
 echo "🚀 Pushing updated data to GitHub..."
 
-git add .
-git commit -m "Daily MF & Nifty data update" || echo "ℹ️ No changes to commit"
-git push
+cd mf-data-cache
 
-cd ..
+# 1️⃣ Configure identity FIRST
+git config user.name "amfi-bot"
+git config user.email "amfi-bot@users.noreply.github.com"
+
+# 2️⃣ Always sync with remote (critical for automation)
+git pull --rebase origin main
+
+# 3️⃣ Commit safely
+git add .
+git commit -m "Daily AMFI & Nifty data update" || echo "ℹ️ No changes to commit"
+
+# 4️⃣ Push
+git push origin main
 
 # -------------------------------
 # Run frontend dev server

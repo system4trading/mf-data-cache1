@@ -30,11 +30,8 @@ jobs:
 
       - run: |
           git config user.name "amfi-bot"
-          git config user.email "amfi-bot@users.noreply.github.com"
-
-          git pull --rebase origin main
-
+          git config user.email "bot@github.com"
           git add .
-          git commit -m "Auto update MF & Nifty data" || echo "ℹ️ No changes to commit"
-
-          git push origin main
+          git commit -m "Auto update MF & Nifty data" || true
+          git push
+          

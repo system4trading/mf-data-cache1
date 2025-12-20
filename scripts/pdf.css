@@ -1,4 +1,6 @@
 @media print {
- body { font-family: "Helvetica"; font-size: 11px; }
- table { border-collapse: collapse; }
+ body { font-family: Helvetica; font-size: 11px; }
+ h3 { background:#f1f5f9; padding:6px; }
+ table { width:100%; border-collapse:collapse; }
+ td,th { border:1px solid #94a3b8; padding:6px; }
 }

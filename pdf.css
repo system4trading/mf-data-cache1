@@ -1,0 +1,4 @@
+@media print {
+ body { font-family: "Helvetica"; font-size: 11px; }
+ table { border-collapse: collapse; }
+}

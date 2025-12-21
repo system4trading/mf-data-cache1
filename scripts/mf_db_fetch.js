@@ -4,7 +4,7 @@ async function loadAMFINav(schemeCode) {
 }
 
 async function loadNifty() {
-  const res = await fetch(`https://query1.finance.yahoo.com/v7/finance/download/${encodeURIComponent(
+  const res = await fetch(`https://www.amfiindia.com/spages/NAVAll.txt/${encodeURIComponent(
   SYMBOL
 )}?period1=${START}&period2=${END}&interval=1d&events=history&includeAdjustedClose=true`);
   return await res.json();

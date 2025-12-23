@@ -21,4 +21,3 @@ jobs:
           git add .
           git commit -m "Daily AMFI NAV update" || true
           git push
-
